@@ -30,7 +30,7 @@ namespace diana
         if( !RegisterClass(&wc) )
         {
             MessageBox(0, "RegisterClass Failed.", 0, 0);
-            throw std::exception("Couldn't register a window");
+			ThrowException("Couldn't register a window");
         }
         // Compute window rectangle dimensions based on requested client area dimensions.
         RECT R = { 0, 0, window_width, window_height };
@@ -56,7 +56,6 @@ namespace diana
     void Platform::Run()
     {
         MSG msg = {0};
-
         while(msg.message != WM_QUIT && !mShotDown)
         {
             // If there are Window messages then process them.

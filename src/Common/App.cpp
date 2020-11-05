@@ -17,6 +17,11 @@ namespace diana
 			LOG_S("Exception caught %s", e.what());
 			MessageBox(0, e.what(), 0, 0);
 		}
+		catch (DxException &e)
+		{
+			LOG_S("DX Exception caught %ls", e.what().c_str());
+			MessageBox(0, LPCSTR(e.what().c_str()), 0, 0);
+		}
 
     }
 }
