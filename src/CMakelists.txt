@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 3.10)
+
+# set the project name and version
+project(Diana VERSION 1.0)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+function(file_list_recurse outVar)
+	file(GLOB_RECURSE relPaths RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" ${ARGN})
+	set(${outVar} ${relPaths} PARENT_SCOPE)
+endfunction()
+
+file_list_recurse(Common_FILES
+	"Common/*.cpp"
+	"Common/*.inl"
+	"Common/*.h"
+)
+
+
+add_library(Common STATIC ${Common_FILES})
+
+add_executable(Diana Main.cpp)
+
+target_link_libraries(Diana PRIVATE Common)
+target_include_directories(Common PRIVATE "Common/")
+
+foreach(source IN LISTS Common_FILES)
+    get_filename_component(source_path "${source}" PATH)
+    string(REPLACE "/" "\\" source_path_msvc "${source_path}")
+    source_group("${source_path_msvc}" FILES "${source}")
+endforeach()  
+
