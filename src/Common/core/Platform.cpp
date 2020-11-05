@@ -7,7 +7,6 @@ namespace
     {
         // Forward hwnd on because we can get messages (e.g., WM_CREATE)
         // before CreateWindow returns, and thus before mhMainWnd is valid.
-        //return D3DApp::GetApp()->MsgProc(hwnd, msg, wParam, lParam);
         return diana::Platform::GetInstance()->MsgProc(hwnd, msg, wParam, lParam);
     }
 }
