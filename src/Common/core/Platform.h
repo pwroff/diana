@@ -26,7 +26,7 @@ namespace diana
         UINT m4xMsaaQuality = 0;      // quality level of 4X MSAA
 
         // Used to keep track of the “delta-time” and game time (§4.4).
-        class GameTimer mTimer;
+        GameTimer mTimer;
         
         Microsoft::WRL::ComPtr<IDXGIFactory4> mdxgiFactory;
         Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
@@ -62,10 +62,27 @@ namespace diana
     private:
         void CreateSystemWindow(const char* window_name, int width, int height);
         void InitDirect3D();
-        void OnResize();
         void LogAdapters() const;
         void LogAdapterOutputs(IDXGIAdapter* adapter) const;
         void LogOutputDisplayModes(IDXGIOutput* output, DXGI_FORMAT format) const;
+		void CreateCommandListAndAllocator();
+		void FlushCommandQueue();
+
+		// probbably those 3 methods below should be a part of the window
+		void OnResize();
+		void CreateWindowDependentResources();
+		void CreateSwapChain();
+
+		ID3D12Resource* CurrentBackBuffer() const;
+
+		D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView() const;
+		D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView() const;
+
+		// Update loop
+	private:
+		void CalculateFrameStats();
+		void Update(const GameTimer& timer);
+		void Draw(const GameTimer& timer);
     public:
 		void Initialize();
         void Run();
